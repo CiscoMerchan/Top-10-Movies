@@ -1,0 +1,65 @@
+jinja2.exceptions.UndefinedError: 'movie' is undefined => this came out because the {%endfor%}  it was
+place before the closing element tag that I placed the {% for xx in xxx %}
+-----
+flask_bootstrap:
+wtf.quik_form ({{ wtf.quick_form(form, novalidate=True) }} )
+This is to set a form with bootstrap elements, is much easier that us FlaskForm and edit the form in
+the html template.
+-How to use flask_bootstrap=>
+    in main.py
+    class FormName(FlaskForm):
+        variable = FieldType('label of the input', validators=[Data, Email, etc]
+        submit = SubmitField('button label')
+
+    in the @app
+    form = FormName(FlaskForm) """ Here the variable 'form' is an Object of the class that will be pass in the
+                                    'render_template' to be connected to the 'wtf.quik_form ' in the .html template"""
+    ** in the @app to fetch the data from the 'wtf.quik_form ' **
+    if form.validate_on_submit():  """ This is Conditional to make sure that all the data entry submitted in the form is
+                                    valid, and it is possible to pass to next step. validate_on_submit () is a method
+                                    from FlaskForm Module. """
+       ****COLLECT THE DATA FROM THE FLASK_ BOOTSTRAP FORM *****
+    variable = form.variablenameintheform.data """ This variable will take the data and/or been used for a db. the main
+                                                    formula from flask_bootstrap for take the data is "form"(makes
+                                                     reference to the form Object). "variablenameintheform" the given
+                                                     name of the variable in the class e.g: variable = FieldType('label of the input', validators=[Data, Email, etc].
+                                                     "data" the input made. """
+
+    in the template.html:
+
+    top of the html=>
+     {% extends 'bootstrap/base.html' %}
+    {% import "bootstrap/wtf.html" as wtf %} """ THis one make the connection with the 'wtf.quik_form ' """
+
+    {{ wtf.quick_form(form, novalidate=True) }} """ THis will be place in the <body> where it is need it the form. """
+
+    ******************  MORE INFO : https://pythonhosted.org/Flask-Bootstrap/forms.html ************************
+________________________________
+
+  **With the sqlite3 db Errors: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed:
+  movie.id [SQL: INSERT INTO movie (title, year, description, rating, ranking, review, img_url)
+   VALUES (?, ?, ?, ?, ?, ?, ?)] **
+    THE PROBLEM: was that rating and ranking in the db were set as "  nullable=False " and in the website were is requested
+the data, there is not such rating and ranking. So, when I automatise the requests data to the db prompt the errors as
+" the is missing that information necessary for the db  "
+    SOLUTION: delete the conditions "  nullable=False " of rating and ranking in the db.
+
+    AS WEll I had problem because in " find_movie() "  there is not " id " to send to the db when is add a new movie, it
+    will appear "sqlite3.IntegrityError: NOT NULL constraint failed: movie.id" demanding to send an id number.
+    SOLUTION: in db add to id the condition 'autoincrement=True'. Now for every movie added it will add/increment by
+    itself the "id". now in the bd can be read it like this : id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    before was :  id = db.Column(db.Integer, primary_key=True)
+
+    MORE INFO : https://www.sqlite.org/faq.html#q1
+
+    ___________________________________________
+
+    Problem:
+    In the index.html in "class="large" " suppose to appear the number in order of appearance up to their ranting.
+    The question is how to make appear the number in order ?
+    Solution:
+    in def home() I will do a for loop that will give a number in order of appearance.
+
+
+
+
