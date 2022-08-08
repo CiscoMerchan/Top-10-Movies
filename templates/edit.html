@@ -15,6 +15,8 @@
 
   <h1 class="heading">Movie Title</h1>
     <p class="description">Edit Movie Rating</p>
-  {{ wtf.quick_form(form, action='edit', method="post",novalidate=True) }}
+        {{ wtf.quick_form(form, novalidate=True) }}
+
   </div>
 {% endblock %}
+
